@@ -1,0 +1,81 @@
+// Design Plan
+
+Specifications:
+
+	Grading Rubric:
+		20 points - Documented progress via GitHub commits and pushes.
+		30 points - A working (passing all test cases) stack implementation of the program.
+		5  points - A working implementation for multiple rooms
+		20 points - A working (passing all test cases) queue implementation of the program.
+		10 points - A working (passing all test cases) optimal path implementation of the program.
+		5  points - Coding style.
+		5  points - Submission of 10 test cases. (9 personal and 1 traded)
+		5  points - Design plan.
+	
+	Problem Statement:
+		Open areas (valid): '.'
+		Walls (non-valid): '@'
+		Sprite's starting position: 'W'
+		Reward location: '$'
+		Open walkway (entrance to next maze): '|'
+		
+		Must run under 10 seconds
+		
+	I/O:
+		// Input
+		size of maze: (M rows by N columns)
+		text-based: characters given above
+		coordinate-based: characters given are listed by their row and position
+						  1) map element (i.e. @, |)
+						  2) row location (x)
+						  3) column location (y)
+						  4) maze level (starting from 0)
+		file input: m (# of rows), n (# of columns), r (number of mazes)
+		
+		// Output
+		original maze setup, with '+' as the route that the sprite takes
+	
+	Errors:
+		catch(Illegal characters (?, !, &))
+		catch(incomplete maps)
+		catch(non-positive or non-zero numbers for the input to the file)
+		catch(wrong coordinates)
+		catch(Not having exactly one of --Stack, --Queue, or --Opt switches set)
+	
+	Exceptions:
+	// You must write and use the User-Defined-Exceptions below which are the errors 
+		- IllegalCommandLineInputsException // Missing required command line, input argument for program
+		- IllegalMapCharacterException // Illegal characters in a map
+		- IncompleteMapException // Incomplete map files such as not enough characters for a given row or too few rows
+		- IncorrectMapFormatException // Incorrectly formatted maps such as not having a pair of positive numbers in the first line
+		
+	CLI:
+		// use arguments in the CLI input to change the approach for the search
+		--Stack (boolean) If this switch is set, use the stack-based approach
+		--Queue (boolean) If this switch is set, use the queue-based approach
+		--Opt (boolean) If this switch is set, find the shortest path
+		--Time (boolean) If this switch is set, print the runtime of the program as described above.
+		--Incoordinate (boolean) If this switch is set, the input file is in the coordinate-based system. If the switch is not set, the input file is in the text-map format.
+		--Outcoordinate (boolean) If this switch is set, the output file is in the coordinate-based system. If the switch is not set, the output file is in the text-map format.
+		--Help (boolean) If this switch is set, print out a brief, informative message on what your program is supposed to do, including what the switches are and what they do. Your program should then exit(0).
+		
+	
+Super-High-level logic:
+	1. Determine the viable paths to the reward or a walkway
+	2. Move through the path
+	3. Loop through steps 1 and 2 while the reward isn't located
+	3. Move to the position of the reward/walkway
+
+High-level logic (pure ADT)
+	1. Enqueue/push sprite position
+	2. Dequeue/pop next location
+	3. Enqueue/push all '.' in the immediate NWSE directions to the next location
+	4. Check to see if you have the reward or a path in the enqueued/popped locations
+	5. Make sure that there are no repeated steps or extra loops around certain locations
+	6. For each iteration, print out the updated path, with '+' replacing the traveled '.' locations
+
+High-level logic (Path Search Algorithm)
+//Djkstra's Algorithm
+//A* Search
+
+
