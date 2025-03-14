@@ -71,12 +71,29 @@ public class MapReader {
 		return null;
 	}
 	
-	public static boolean isWalkway() {
+	//replace with getData, a method to return a string that you can make a substring out of for all data? or a dictionary for hashing
+	public static int getRoom(Tile[][][] tile) {
+		int level = tile[][][] // get the index of the 3rd dimension of the array
+		return level;
+	}
+
+	public static boolean isWalkway(String filename, char ele) {
+		if(ele == '|') {
+			Tile[][][] inputTiles = readMap(filename);
+			int room = getRoom(inputTiles); // get the current room
+			setRoom(room+1);
+			return true;
+		}
 		return false;
 	}
 	
-	public static boolean isReward() {
-		return false;
+	public static boolean isReward(char ele) {
+		if(ele == '$') {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public static void move() {

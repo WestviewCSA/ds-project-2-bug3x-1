@@ -4,27 +4,38 @@ import java.io.*;
 public class p2 {
 	private static boolean firsted; // only used for the 0th level, not viable for 1 >= n. must update.
 	
-	public static Tile[][][] quadSearch(Tile[][][] currPos) {
+	public static Tile[][][] quadSearch(Tile[][][] currPos, Queue queue) {
 		// read NWSE path for the current position, enqueue viable paths
 		
 		// from the curr position, go through NWSE values and check for viable values. enqueue all in NWSE order as n+0,n+1,n+2,n+3 in the queue so that it can referenced again
+		int currRow = parseInt(currPos.getData.substring());
+		int currCol = parseInt(currPos.getData.substring());
+		int currRoom = parseInt(currPos.getData.substring());
+		char ele = 
+		queue.add(currPos[currRow][currCol][curRoom])
 		if()
 		return null;
 	}
 	
-	public static char queueSearch() {
+	public static takeData
+	
+	public static char queueSearch(int room) {
 		//redo the logic from scratch. used as an extension of quadSearch to account for W to a walkway or buck
 		
 		Tile[][][] nwse = null;
 		Queue searchList = new LinkedList();
-		if(firsted == false) {
+		if(firsted == false && room == 1) {
 			// set the first position if it's currently null
 			wPosition(searchList, 0);
+			firsted = true;
+		}
+		else if(firsted == false && room != 1) {
+			wPosition(searchList, room);
 		}
 		else {
-			// find the
-			char element = nwse[/*3 dimension array*/];
-			Tile[][][] position = new Tile(element);
+			// find and queue the next positions, call conditional methods for specific action
+			char element = getData().substring(0,1); // method to be implemented
+			Tile[][][] position; // find the character for the positions
 			quadSearch(position);
 		}
 		return 0;
