@@ -73,7 +73,7 @@ public class MapReader {
 	
 	//replace with getData, a method to return a string that you can make a substring out of for all data? or a dictionary for hashing
 	public static int getRoom(Tile[][][] tile) {
-		int level = tile[][][] // get the index of the 3rd dimension of the array
+		int level = Tile[][][] // get the index of the 3rd dimension of the array
 		return level;
 	}
 
@@ -96,9 +96,18 @@ public class MapReader {
 		}
 	}
 	
-	public static void move() {
+	public static void move(Queue queue) {
 		// returns the optimal path, replacing the traversed '.' with '+'
-		return;
+		// for the coordinates, change the '.' in the queue to '+' for that coordinate, so then you can print the map with the original map
+		// except for the replaced '.' by a conditional with the queued values
+		for(int i = 0; i < queue.size(); i++) {
+			
+		}
+		
+	}
+	
+	public static void printUpdatedMap() { // implement the logic above
+		
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

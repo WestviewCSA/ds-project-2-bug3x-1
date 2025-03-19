@@ -4,20 +4,24 @@ import java.io.*;
 public class p2 {
 	private static boolean firsted; // only used for the 0th level, not viable for 1 >= n. must update.
 	
-	public static Tile[][][] quadSearch(Tile[][][] currPos, Queue queue) {
+	public static Queue quadSearch(Tile[][][] currPos, Queue queue) {
 		// read NWSE path for the current position, enqueue viable paths
 		
+		// must be tested ; most likely will not work due to the nature of toString() vs the 3D array variable, which is just 
 		// from the curr position, go through NWSE values and check for viable values. enqueue all in NWSE order as n+0,n+1,n+2,n+3 in the queue so that it can referenced again
-		int currRow = parseInt(currPos.getData.substring());
-		int currCol = parseInt(currPos.getData.substring());
-		int currRoom = parseInt(currPos.getData.substring());
-		char ele = 
-		queue.add(currPos[currRow][currCol][curRoom])
-		if()
-		return null;
+		int currRow = Integer.parseInt(currPos.toString().substring(0,1)); // get the row position of the currPos object
+		int currCol = Integer.parseInt(currPos.toString().substring(1,2)); // get the col position o the currPos object
+		int currRoom = Integer.parseInt(currPos.toString().substring(2,3)); // get the room position of the currPos object
+		char ele = 0; // get the element of the currPos object
+				
+		queue.add(currPos[currRow+1][currCol][currRoom]);
+		queue.add(currPos[currRow][currCol+1][currRoom]);
+		queue.add(currPos[currRow-1][currCol][currRoom]);
+		queue.add(currPos[currRow][currCol-1][currRoom]);
+		
+		return queue;
 	}
-	
-	public static takeData
+
 	
 	public static char queueSearch(int room) {
 		//redo the logic from scratch. used as an extension of quadSearch to account for W to a walkway or buck
@@ -34,7 +38,7 @@ public class p2 {
 		}
 		else {
 			// find and queue the next positions, call conditional methods for specific action
-			char element = getData().substring(0,1); // method to be implemented
+			char element = .getElement(); // method to be implemented
 			Tile[][][] position; // find the character for the positions
 			quadSearch(position);
 		}
@@ -57,7 +61,7 @@ public class p2 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// to run the search functionalities
-		queueSearch();
+		queueSearch(1);
 	}
 
 }
