@@ -4,7 +4,7 @@ import java.io.*;
 public class p2 {
 	private static boolean firsted; // only used for the 0th level, not viable for 1 >= n. must update.
 	
-	public static Queue quadSearch(Tile[][][] currPos, Queue queue) {
+	public static Queue quadSearch(Tile[][][] currPos, Queue queue, Queue visit) {
 		// read NWSE path for the current position, enqueue viable paths
 		
 		// must be tested ; most likely will not work due to the nature of toString() vs the 3D array variable, which is just 
@@ -13,34 +13,46 @@ public class p2 {
 		int currCol = Integer.parseInt(currPos.toString().substring(1,2)); // get the col position o the currPos object
 		int currRoom = Integer.parseInt(currPos.toString().substring(2,3)); // get the room position of the currPos object
 		char ele = 0; // get the element of the currPos object
-				
-		queue.add(currPos[currRow+1][currCol][currRoom]);
-		queue.add(currPos[currRow][currCol+1][currRoom]);
-		queue.add(currPos[currRow-1][currCol][currRoom]);
+		
+		// temporary, make a function to return a boolean value for the parameters of NWSE
+		if(currRow + 1 > 0 && visitation == false) {
+			queue.add(currPos[currRow+1][currCol][currRoom]);
+		}
+		if(currCol + 1 > 0 && visitation == false) {
+			queue.add(currPos[currRow][currCol+1][currRoom]);
+		}
+		if(currRow-1 > 0 && visitation == false) {
+			queue.add(currPos[currRow-1][currCol][currRoom]);
+		}
+		if(currCol-1 > 0 && visitation == false)
 		queue.add(currPos[currRow][currCol-1][currRoom]);
 		
 		return queue;
 	}
-
-	
 	public static char queueSearch(int room) {
 		//redo the logic from scratch. used as an extension of quadSearch to account for W to a walkway or buck
 		
 		Tile[][][] nwse = null;
+		
+		
 		Queue searchList = new LinkedList();
+		Queue visited = new LinkedList();
+		
 		if(firsted == false && room == 1) {
 			// set the first position if it's currently null
-			wPosition(searchList, 0);
+			wPosition(searchList, visited, 0);
 			firsted = true;
 		}
 		else if(firsted == false && room != 1) {
-			wPosition(searchList, room);
+			wPosition(searchList, visited, room);
 		}
 		else {
 			// find and queue the next positions, call conditional methods for specific action
 			char element = .getElement(); // method to be implemented
 			Tile[][][] position; // find the character for the positions
-			quadSearch(position);
+			quadSearch(position, searchList, visited);
+			
+			queueSearch(room);
 		}
 		return 0;
 	}
@@ -51,10 +63,11 @@ public class p2 {
 	// change the . path to a + path, print it out.
 	// do not queue invalid characters (a, b, c, !, ?)
 	
-	public static Queue wPosition(Queue queue, int l) {
+	public static Queue wPosition(Queue queue, Queue visited, int l) {
 		Tile[][][] tile = MapReader.readMap("txt_map1.txt");
-		Tile[][][] pos = MapReader.startPosition(tile, 0);
+		Tile[][][] pos = MapReader.startPosition(tile, l);
 		queue.add(pos);
+		visited.add(pos);
 		return queue;
 	}
 	
