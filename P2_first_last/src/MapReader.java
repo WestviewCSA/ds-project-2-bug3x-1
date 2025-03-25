@@ -41,6 +41,18 @@ public class MapReader {
 //			e.printStackTrace();
 //		}
 	}
+	public static int getRoom(Tile[][][] tileArray) {
+        for (int room = 0; room < tileArray.length; room++) {
+            for (int row = 0; row < tileArray[room].length; row++) {
+                for (int col = 0; col < tileArray[room][row].length; col++) {
+                    if (tileArray[room][row][col].getCharacter() == 'W') {
+                        return room;  // Return the current room
+                    }
+                }
+            }
+        }
+        return -1; // Not found
+  }
 	
 	public static Tile startPosition(Tile[][][] tileArray) {
 	    for (int room = 0; room < tileArray.length; room++) {
@@ -66,25 +78,13 @@ public class MapReader {
 		return null;
 	}
 	
-	//replace with getData, a method to return a string that you can make a substring out of for all data? or a dictionary for hashing
-	 public static int getRoom(Tile[][][] tileArray) {
-	        for (int room = 0; room < tileArray.length; room++) {
-	            for (int row = 0; row < tileArray[room].length; row++) {
-	                for (int col = 0; col < tileArray[room][row].length; col++) {
-	                    if (tileArray[room][row][col].getCharacter() == 'W') {
-	                        return room;  // Return the current room
-	                    }
-	                }
-	            }
-	        }
-	        return -1; // Not found
-	  }
+	//replace with getData, a method to return a string that you can make a substring out of for all data? or a dictionary for hashin
 	 
 	public static boolean isWalkway(String filename, char ele) {
 		if(ele == '|') {
 			Tile[][][] inputTiles = readMap(filename);
 			int room = getRoom(inputTiles); // get the current room
-			setRoom(room+1);
+//			setRoom(room+1);
 			return true;
 		}
 		return false;
