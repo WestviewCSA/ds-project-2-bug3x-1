@@ -13,23 +13,18 @@ public class MapReader {
 			int numRooms = scanner.nextInt();
 			Tile[][][] temp = new Tile[numRows][numCols][numRooms];
 			
-			while(scanner.hasNextLine() /* only going across the row, but where's the column being accounted  for?*/){
-				String row = scanner.nextLine();
-				int rowCount = 0;
-				int roomCount = 0;
-				for(int j = 0; j < numRows; j++) {
-					if(row.length() > 0) {
-						for(int i = 0; i < row.length(); i++) {
-							char element = row.charAt(i);
-							temp[rowCount][i][roomCount] = new Tile(element);
-							// add char to 3D array
-							
-							//changing to the index of the next level
+			
+			for(int room = 0; room < numRooms; room++) {
+				for(int row = 0; row < numRows; row++) {
+					if(scanner.hasNextLine()) {
+						String line = scanner.nextLine();
+						for(int col = 0; col < numCols; col++) {
+							 temp[room][row][col] = new Tile(line.charAt(col));
 						}
 					}
 				}
-				roomCount++;
 			}
+			scanner.close();
 			tile = temp;
 		}
 		catch(FileNotFoundException e){
@@ -47,20 +42,19 @@ public class MapReader {
 //		}
 	}
 	
-	public static Tile[][][] startPosition(Tile[][][] tileArray, int l) {
-		char curr = 0;
-		Tile[][][] position = null;
-		for(int i = 0; i < tileArray[i].length; i++) {
-			for(int j = 0; j < tileArray[i][j].length; j++) {
-				// find the char curr value of each tile in the 3d array storing tiles
-				// set the startPosition to the tile coordinates where there is a tile
-				if(curr == 'W') {
-					position = new Tile[i][j][l];
-				}
-			}
-		}
-		return position;
+	public static Tile startPosition(Tile[][][] tileArray) {
+	    for (int room = 0; room < tileArray.length; room++) {
+	        for (int row = 0; row < tileArray[room].length; row++) {
+	            for (int col = 0; col < tileArray[room][row].length; col++) {
+	                if (tileArray[room][row][col].getCharacter() == 'W') {
+	                    return tileArray[room][row][col];  // Return `W`'s starting position
+	                }
+	            }
+	        }
+	    }
+	    return null; // No start position found
 	}
+
 	
 	public static char[][] arrayConvert(char[][] cMap){
 		
