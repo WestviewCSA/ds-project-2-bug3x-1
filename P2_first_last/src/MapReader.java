@@ -18,7 +18,13 @@ public class MapReader {
 					if (scanner.hasNextLine()) {
 						String line = scanner.nextLine();
 						for (int col = 0; col < Math.min(line.length(), numCols); col++) {
-							temp[room][row][col] = new Tile(line.charAt(col));
+							temp[room][row][col] = new Tile(line.charAt(col)); // index out of bounds error
+							/*
+							 * Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+								at MapReader.readMap(MapReader.java:21)
+								at MapReader.main(MapReader.java:114)
+
+							 */
 						}
 					}
 				}
@@ -29,15 +35,6 @@ public class MapReader {
 			e.printStackTrace();
 		}
 		return tile;
-
-//		List<char[]> allChars = new ArrayList<>(); // make a list of character arrays
-//		
-//		try (BufferedReader input = new BufferedReader(new FileReader(fileName))){ /* read the file, line by line*/
-//			
-//		}
-//		catch(IOException e){
-//			e.printStackTrace();
-//		}
 	}
 
 	public static int getRoom(Tile[][][] tileArray) {
