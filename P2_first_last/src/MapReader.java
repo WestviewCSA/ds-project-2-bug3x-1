@@ -54,7 +54,8 @@ public class MapReader {
 	    }
 	    return null; // No start position found
 	}
-
+	
+	
 	
 	public static char[][] arrayConvert(char[][] cMap){
 		
@@ -66,11 +67,19 @@ public class MapReader {
 	}
 	
 	//replace with getData, a method to return a string that you can make a substring out of for all data? or a dictionary for hashing
-	public static int getRoom(Tile[][][] tile) {
-		int level = Tile[][][] // get the index of the 3rd dimension of the array
-		return level;
-	}
-
+	 public static int getRoom(Tile[][][] tileArray) {
+	        for (int room = 0; room < tileArray.length; room++) {
+	            for (int row = 0; row < tileArray[room].length; row++) {
+	                for (int col = 0; col < tileArray[room][row].length; col++) {
+	                    if (tileArray[room][row][col].getCharacter() == 'W') {
+	                        return room;  // Return the current room
+	                    }
+	                }
+	            }
+	        }
+	        return -1; // Not found
+	  }
+	 
 	public static boolean isWalkway(String filename, char ele) {
 		if(ele == '|') {
 			Tile[][][] inputTiles = readMap(filename);
@@ -81,31 +90,37 @@ public class MapReader {
 		return false;
 	}
 	
-	public static boolean isReward(char ele) {
-		if(ele == '$') {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+	public static boolean isReward(Tile tile) {
+        return tile.getCharacter() == '$';
+    }
 	
-	public static void move(Queue queue) {
-		// returns the optimal path, replacing the traversed '.' with '+'
-		// for the coordinates, change the '.' in the queue to '+' for that coordinate, so then you can print the map with the original map
-		// except for the replaced '.' by a conditional with the queued values
-		for(int i = 0; i < queue.size(); i++) {
-			
-		}
-		
-	}
+	public static void move(Queue<Tile> queue) {
+        while (!queue.isEmpty()) {
+            Tile tile = queue.poll();
+            if (tile.getCharacter() == '.') {
+                tile.setCharacter('+'); // Replace path with `+`
+            }
+        }
+    }
 	
-	public static void printUpdatedMap() { // implement the logic above
-		
-	}
+	public static void printMap(Tile[][][] tileArray) {
+        for (int room = 0; room < tileArray.length; room++) {
+            System.out.println("Room " + room);
+            for (int row = 0; row < tileArray[room].length; row++) {
+                for (int col = 0; col < tileArray[room][row].length; col++) {
+                    System.out.print(tileArray[room][row][col].getCharacter());
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+    }
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		readMap("txt_map1.txt");
-		
-	}
+        Tile[][][] map = readMap("txt_map1.txt");
+        if (map != null) {
+            printMap(map);
+            Tile start = startPosition(map);
+            System.out.println("Start Position: " + (start != null ? start.getCharacter() : "Not found"));
+        }
+    }
 }
