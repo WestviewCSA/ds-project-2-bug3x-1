@@ -5,9 +5,9 @@ public class p2 {
 	private static boolean firsted; // only used for the 0th level, not viable for 1 >= n. must update.
 
 	public static void quadSearch(Tile[][][] tileMap, Tile curr, Queue<Tile> queue, Set<Tile> visited) {
-		int row = curr.getRow(tileMap);
-		int col = curr.getCol(tileMap);
-		int room = curr.getRoom(tileMap);
+		int row = curr.getRow();
+		int col = curr.getCol();
+		int room = curr.getRoom();
 
 		int[][] directions = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
@@ -77,8 +77,14 @@ public class p2 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// to run the search functionalities
-		Tile[][][] tileMap = MapReader.readMap("src/map_input/txt_map6");
-		queueSearch(tileMap, 1);
+		Tile[][][] tileMap = null;
+		try {
+            tileMap = MapReader.readMap("src/map_input/txt_map6");
+        } catch (IllegalCommandLineInputsException | IllegalMapCharacterException | IncompleteMapException | IncorrectMapFormatException e) {
+            System.err.println("Error: " + e.getMessage());
+            return;
+        }
+		queueSearch(tileMap, 0);
 	}
 
 }
