@@ -45,7 +45,8 @@ public class StackTrav {
             System.out.println("Visiting: " + current); // Debugging print to check current tile
 
             if (element == '$') {
-                System.out.println("Goal found at: " + current);
+                System.out.println("Goal found at: " + current + " ");
+                System.out.println("At room " + (1+current.getRoom()) + ", " + "row " + (1+current.getRow()) + ", at column " + (1+current.getCol()));
                 return;
             }
             if (element == '|') {

@@ -16,6 +16,7 @@ public class MapReader {
             int numRows = scanner.nextInt();
             int numCols = scanner.nextInt();
             int numRooms = scanner.nextInt();
+            scanner.nextLine();
             
             // Validate if the map is correctly formatted
             if (numRows <= 0 || numCols <= 0 || numRooms <= 0) {
@@ -54,6 +55,62 @@ public class MapReader {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return tile;
+    }
+	
+	public static Tile[][][] readCoordinateMap(String fileName) throws IllegalCommandLineInputsException, IllegalMapCharacterException, IncompleteMapException, IncorrectMapFormatException {
+        Tile[][][] tile = null;
+        
+        try {
+            File file = new File(fileName);
+            Scanner scanner = new Scanner(file);
+
+            // Read map dimensions and number of rooms
+            if (!scanner.hasNextInt()) {
+                throw new IncorrectMapFormatException("The map is incorrectly formatted. The first line should contain three positive integers.");
+            }
+
+            int numRows = scanner.nextInt();
+            int numCols = scanner.nextInt();
+            int numRooms = scanner.nextInt();
+
+            // Validate map dimensions
+            if (numRows <= 0 || numCols <= 0 || numRooms <= 0) {
+                throw new IncorrectMapFormatException("Map dimensions must be positive integers.");
+            }
+
+            // Initialize 3D array with null values
+            tile = new Tile[numRooms][numRows][numCols];
+
+            // Read tile definitions
+            while (scanner.hasNext()) {
+                if (!scanner.hasNext()) break; // Avoid infinite loops
+                
+                char character = scanner.next().charAt(0); // Read the tile type
+                int row = scanner.nextInt();
+                int col = scanner.nextInt();
+                int room = scanner.nextInt();
+
+                // Validate character
+                if (!isValidMapCharacter(character)) {
+                    throw new IllegalMapCharacterException("Illegal character '" + character + "' at (" + row + ", " + col + ", " + room + ")");
+                }
+
+                // Validate coordinates
+                if (room >= numRooms || row >= numRows || col >= numCols || room < 0 || row < 0 || col < 0) {
+                    throw new IncompleteMapException("Invalid tile coordinates (" + row + ", " + col + ", " + room + ")");
+                }
+
+                // Store tile in the map
+                tile[room][row][col] = new Tile(character, row, col, room);
+            }
+
+            scanner.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         return tile;
     }
 
@@ -152,7 +209,7 @@ public class MapReader {
         }
 		if (tileMap != null) {
 			printMap(tileMap);
-			Tile start = startPosition(tileMap, 1); // get the starting position tile
+			Tile start = startPosition(tileMap, 0); // get the starting position tile
 			System.out.println("Start Position: " + (start != null ? start.getCharacter() : "Not found"));
 		}
 	}

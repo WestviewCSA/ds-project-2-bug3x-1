@@ -16,11 +16,11 @@ public class p2 {
 			int newCol = col + dir[1];
 
 			// Check bounds
-			if (newRow < 0 || newRow >= tileMap.length || newCol < 0 || newCol >= tileMap[0].length) {
+			if (newRow < 0 || newRow >= tileMap[0].length || newCol < 0 || newCol >= tileMap[0][0].length) {
 				continue;
 			}
 
-			Tile neighbor = tileMap[newRow][newCol][room];
+			Tile neighbor = tileMap[room][newRow][newCol];
 			if (neighbor != null && !visited.contains(neighbor) && neighbor.getCharacter() != '@') {
 				queue.add(neighbor);
 				visited.add(neighbor);
@@ -44,13 +44,21 @@ public class p2 {
 
 			char element = current.getCharacter();
 			if (element == '$') {
-				System.out.println("Goal found at: " + current);
-				return;
-			}
+                System.out.println("Goal found at: " + current + " ");
+                System.out.println("At room " + (1+current.getRoom()) + ", " + "row " + (1+current.getRow()) + ", at column " + (1+current.getCol()));
+                return;
+            }
 			if (element == '|') {
-				System.out.println("Transitioning to next level.");
-				continue;
+			    if (room + 1 < tileMap.length) { // Ensure next room exists
+			        Tile nextRoomTile = tileMap[room + 1][current.getRow()][current.getCol()];
+			        if (!visited.contains(nextRoomTile)) {
+			            searchList.add(nextRoomTile);
+			            visited.add(nextRoomTile);
+			        }
+			    }
+			    continue;
 			}
+
 
 			// Add valid neighbors to the queue
 			quadSearch(tileMap, current, searchList, visited);
@@ -67,11 +75,18 @@ public class p2 {
 	// do not queue invalid characters (a, b, c, !, ?)
 
 	public static void wPosition(Tile[][][] tileMap, Queue<Tile> queue, Set<Tile> visited, int room) {
-		Tile start = MapReader.startPosition(tileMap, room);
-		if (start != null) {
-			queue.add(start);
-			visited.add(start);
-		}
+	    Tile start = MapReader.startPosition(tileMap, room);
+	    if (start == null) {
+	        System.err.println("Error: No start position found in Room " + room);
+	        return;
+	    }
+	    queue.add(start);
+	    visited.add(start);
+	}
+
+	
+	public static void optimalSearch(Tile[][][] tileMap) {
+		queueSearch(tileMap, 0);
 	}
 
 	public static void main(String[] args) {
