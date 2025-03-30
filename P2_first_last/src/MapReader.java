@@ -114,18 +114,6 @@ public class MapReader {
         return tile;
     }
 
-//	public static int getRoomList(Tile[][][] tileArray) {
-//		for (int room = 0; room < tileArray.length; room++) {
-//			for (int row = 0; row < tileArray[room].length; row++) {
-//				for (int col = 0; col < tileArray[room][row].length; col++) {
-//					if (tileArray[room][row][col].getCharacter() == 'W') {
-//						return room; // Return the current room
-//					}
-//				}
-//			}
-//		}
-//		return -1; // Not found
-//	}
 
 	private static boolean isValidMapCharacter(char ch) {
         // Check if the character is one of the valid map characters

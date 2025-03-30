@@ -86,20 +86,59 @@ public class p2 {
 
 	
 	public static void optimalSearch(Tile[][][] tileMap) {
-		queueSearch(tileMap, 0);
+		DJK.dijkstraSearch(tileMap, 0);
 	}
-
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// to run the search functionalities
-		Tile[][][] tileMap = null;
-		try {
-            tileMap = MapReader.readMap("src/map_input/txt_map6");
-        } catch (IllegalCommandLineInputsException | IllegalMapCharacterException | IncompleteMapException | IncorrectMapFormatException e) {
-            System.err.println("Error: " + e.getMessage());
+        if (args.length == 0) {
+            System.err.println("Usage: java MapTraversal [options] <map_filename>");
             return;
         }
-		queueSearch(tileMap, 0);
-	}
+
+        String mapFilename = null;
+        boolean outCoordinateDisabled = false;
+
+        // Process command-line arguments
+        List<String> validArgs = new ArrayList<>();
+        for (String arg : args) {
+            switch (arg) {
+                case "--Opt":
+                case "--Queue":
+                case "--Stack":
+                    // Ignore these switches
+                    break;
+                case "--OutCoordinate":
+                    outCoordinateDisabled = true;  // Mark it as disabled
+                    break;
+                default:
+                    validArgs.add(arg);
+                    break;
+            }
+        }
+
+        // The last argument should be the map filename
+        if (!validArgs.isEmpty()) {
+            mapFilename = validArgs.get(validArgs.size() - 1);
+        } else {
+            System.err.println("Error: No map file specified.");
+            return;
+        }
+
+        // Debugging output
+        System.out.println("Map file: " + mapFilename);
+        System.out.println("--OutCoordinate disabled: " + outCoordinateDisabled);
+
+        // Load the map dynamically without hardcoding file names
+        Tile[][][] tileMap = null;
+        try {
+            tileMap = MapReader.readMap(mapFilename);
+        } catch (Exception e) {
+            System.err.println("Error loading map: " + e.getMessage());
+            return;
+        }
+
+        // Start the traversal
+        StackTrav.stackSearch(tileMap, 0);
+    }
 
 }
