@@ -8,20 +8,21 @@ public class StackTrav {
         int row = curr.getRow();
         int col = curr.getCol();
 
-        // Directions: Down, Up, Right, Left
         int[][] directions = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
         for (int[] dir : directions) {
             int newRow = row + dir[0];
             int newCol = col + dir[1];
 
-            // Check if the new position is out of bounds for the current room
             if (newRow < 0 || newRow >= tileMap[room].length || newCol < 0 || newCol >= tileMap[room][0].length) {
                 continue;
             }
 
             Tile neighbor = tileMap[room][newRow][newCol];
             if (neighbor != null && !visited.contains(neighbor) && neighbor.getCharacter() != '@') {
+                if (neighbor.getCharacter() == '.') {
+                    neighbor.setCharacter('+'); // Change path marker
+                }
                 stack.push(neighbor);
                 visited.add(neighbor);
             }
@@ -30,7 +31,7 @@ public class StackTrav {
 
     public static void stackSearch(Tile[][][] tileMap, int room) {
         Stack<Tile> searchList = new Stack<>();
-        Set<Tile> visited = new HashSet<>(); // Use HashSet for O(1) lookup time
+        Set<Tile> visited = new HashSet<>();
 
         if (!firsted) {
             firstPosition(tileMap, searchList, visited, room);
@@ -42,27 +43,24 @@ public class StackTrav {
             if (current == null) continue;
 
             char element = current.getCharacter();
-            System.out.println("Visiting: " + current); // Debugging print to check current tile
-
             if (element == '$') {
-                System.out.println("Goal found at: " + current + " ");
-                System.out.println("At room " + (1+current.getRoom()) + ", " + "row " + (1+current.getRow()) + ", at column " + (1+current.getCol()));
+                System.out.println("Goal found at: " + current);
+                System.out.println("At room " + (1 + current.getRoom()) + ", row " + (1 + current.getRow()) + ", column " + (1 + current.getCol()));
+                printMap(tileMap);
                 return;
             }
             if (element == '|') {
-                // Handle transition to next room
-                System.out.println("Transitioning to next level.");
-                if (room + 1 < tileMap.length) { // Check if next room exists
-                    stackSearch(tileMap, room + 1);  // Call search on next room
+                if (room + 1 < tileMap.length) {
+                    stackSearch(tileMap, room + 1);
                 }
                 continue;
             }
 
-            // Add valid neighbors to the stack
             quadSearch(tileMap, current, searchList, visited, room);
         }
 
         System.out.println("No valid path found.");
+        printMap(tileMap);
     }
 
     public static void firstPosition(Tile[][][] tileMap, Stack<Tile> stack, Set<Tile> visited, int room) {
@@ -73,15 +71,27 @@ public class StackTrav {
         }
     }
 
+    public static void printMap(Tile[][][] tileMap) {
+        for (int r = 0; r < tileMap.length; r++) {
+            System.out.println("Room " + (r + 1) + ":");
+            for (int i = 0; i < tileMap[r].length; i++) {
+                for (int j = 0; j < tileMap[r][i].length; j++) {
+                    System.out.print(tileMap[r][i][j].getCharacter() + " ");
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+    }
+
     public static void main(String[] args) {
-        // Run the stack-based search functionality
-    	Tile[][][] tileMap = null;
-		try {
+        Tile[][][] tileMap = null;
+        try {
             tileMap = MapReader.readMap("src/map_input/txt_map6");
-        } catch (IllegalCommandLineInputsException | IllegalMapCharacterException | IncompleteMapException | IncorrectMapFormatException e) {
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             return;
         }
-        stackSearch(tileMap, 0); // Search the stack, starting from the first traversal
+        stackSearch(tileMap, 0);
     }
 }
